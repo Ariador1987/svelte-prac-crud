@@ -18,7 +18,7 @@
 
     // možemo ovo napravit reaktivnom vrijednošću i postavit je na setId
     // ako je setId null, onda je isEditing automatski false i netrebamo propdrillat ga
-    let isEditing = false;
+    $: isEditing = false;
 
     //// functions
     const calculateTotals = (expensesArr) => {
@@ -73,7 +73,6 @@
         on:createExpense={addExpense}
         on:editItem={editExpense}
         {isEditing}
-        {setDefaultState}
         name={setName}
         id={setId}
         amount={setAmount}

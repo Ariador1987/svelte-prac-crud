@@ -10,19 +10,22 @@
     export let setDefaultState = () => {};
 
     export let isEditing = false;
+    export let showForm = false;
 
     //// reactives
     $: isEmpty = !name || !amount;
 
     //// functions
     const handleSubmit = (e) => {
-        console.log(isEditing);
+        if (isEmpty) return;
         if (isEditing) {
             dispatch("editItem", { name, id, amount });
         } else {
             dispatch("createExpense", { name, amount });
         }
+        // handles reset for this component
         clearFields();
+        // handles reset for app component in case 
         setDefaultState();
     };
     const clearFields = () => {
@@ -46,7 +49,7 @@
         {#if isEmpty}
             <p class="form-empty">Please fill out all form fields</p>
         {/if}
-        <button type="submit" class="btn btn-block">Add expense</button>
+        <button type="submit" class="btn btn-block">{isEditing ? "Edit" : "Add"} expense</button>
         <button
             disabled={isEmpty}
             type="button"
