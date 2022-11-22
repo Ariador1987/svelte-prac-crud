@@ -1,14 +1,16 @@
 <script lang="js">
+    import { onMount, afterUpdate } from "svelte";
     //// components
     import Navbar from "./lib/components/Navbar.svelte";
     import Title from "./lib/components/Title.svelte";
     import Totals from "./lib/components/Totals.svelte";
     import ExpensesList from "./lib/components/Expenses/ExpensesList.svelte";
     import ExpenseForm from "./lib/components/Expenses/ExpenseForm.svelte";
+    import Modal from "./lib/components/Modal.svelte";
     //// data
-    import expensesData from "./lib/data/data";
+    // import expensesData from "./lib/data/data";
     // local copy of the data
-    let expenses = [...expensesData];
+    let expenses = [];
     //// variables
     $: total = calculateTotals(expenses);
     // editing variables
@@ -19,6 +21,7 @@
     // možemo ovo napravit reaktivnom vrijednošću i postavit je na setId
     // ako je setId null, onda je isEditing automatski false i netrebamo propdrillat ga
     $: isEditing = false;
+    let isShown = false;
 
     //// functions
     const calculateTotals = (expensesArr) => {
@@ -42,9 +45,11 @@
         setId = itemToModify.id;
         setName = itemToModify.name;
         isEditing = true;
+        displayForm();        
     };
     const clearExpenses = () => {
         expenses = [];
+
     };
     const addExpense = (e) => {
         const { name, amount } = e.detail;
@@ -65,18 +70,48 @@
         setAmount = null;
         setId = null;
     };
+    const displayForm = () => {
+        isShown = true;
+    }
+    const hideForm = () => {
+        isShown = false;
+    }
+
+    // local storage
+    const setLocalStorage = () => {
+        localStorage.setItem("expenses" , JSON.stringify(expenses));
+    }
+
+    onMount(() => {
+        let expensesfromLS;
+        if (localStorage.getItem("expenses")) {
+            expensesfromLS = JSON.parse(localStorage.getItem("expenses"))
+        } else {
+            expensesfromLS = [];
+        }
+        expenses = expensesfromLS;
+    })
+    afterUpdate(() => {
+        console.log("after update")
+        setLocalStorage();
+    })
 </script>
 
-<Navbar />
+<Navbar {displayForm}/>
 <main class="content">
-    <ExpenseForm
-        on:createExpense={addExpense}
-        on:editItem={editExpense}
-        {isEditing}
-        name={setName}
-        id={setId}
-        amount={setAmount}
-    />
+    {#if isShown}
+        <Modal>
+            <ExpenseForm
+                {hideForm}
+                on:createExpense={addExpense}
+                on:editItem={editExpense}
+                {isEditing}
+                name={setName}
+                id={setId}
+                amount={setAmount}
+            />
+        </Modal>
+    {/if}
     <Totals title="total expenses" {total} />
     <ExpensesList
         {expenses}

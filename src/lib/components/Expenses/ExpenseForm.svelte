@@ -1,16 +1,19 @@
 <script>
     import Title from "../Title.svelte";
     import { createEventDispatcher } from "svelte";
+    import {onMount, onDestroy, beforeUpdate, afterUpdate} from "svelte";
 
+    localStorage.setItem("testing", "hello");
     //// variables
     const dispatch = createEventDispatcher();
     export let name = "";
     export let amount = null;
     export let id = null;
     export let setDefaultState = () => {};
+    // export let hideForm = () => {};
+    export let hideForm = () => {};
 
     export let isEditing = false;
-    export let showForm = false;
 
     //// reactives
     $: isEmpty = !name || !amount;
@@ -27,12 +30,14 @@
         clearFields();
         // handles reset for app component in case 
         setDefaultState();
+        hideForm();        
     };
     const clearFields = () => {
         name = "";
         amount = null;
         id = null;
     };
+    
 </script>
 
 <section class="form">
@@ -51,10 +56,9 @@
         {/if}
         <button type="submit" class="btn btn-block">{isEditing ? "Edit" : "Add"} expense</button>
         <button
-            disabled={isEmpty}
+        on:click={hideForm}
             type="button"
             class="close-btn"
-            class:disabled={isEmpty}
         >
             <i class="fas fa-times" />
             Close
