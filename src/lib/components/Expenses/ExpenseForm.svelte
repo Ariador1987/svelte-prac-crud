@@ -7,6 +7,7 @@
     export let name = "";
     export let amount = null;
     export let id = null;
+    export let setDefaultState = () => {};
 
     export let isEditing = false;
 
@@ -15,13 +16,14 @@
 
     //// functions
     const handleSubmit = (e) => {
-        // dispatch("createExpense", { name, amount });
+        console.log(isEditing);
         if (isEditing) {
             dispatch("editItem", { name, id, amount });
-            clearFields();
-            return;
+        } else {
+            dispatch("createExpense", { name, amount });
         }
-        console.log("not editing");
+        clearFields();
+        setDefaultState();
     };
     const clearFields = () => {
         name = "";

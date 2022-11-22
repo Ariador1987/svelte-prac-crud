@@ -16,6 +16,8 @@
     let setAmount = null;
     let setId = null;
 
+    // možemo ovo napravit reaktivnom vrijednošću i postavit je na setId
+    // ako je setId null, onda je isEditing automatski false i netrebamo propdrillat ga
     let isEditing = false;
 
     //// functions
@@ -56,7 +58,6 @@
             }
             return item;
         });
-        setDefaultState();
     };
     const setDefaultState = () => {
         isEditing = false;
@@ -72,6 +73,7 @@
         on:createExpense={addExpense}
         on:editItem={editExpense}
         {isEditing}
+        {setDefaultState}
         name={setName}
         id={setId}
         amount={setAmount}
