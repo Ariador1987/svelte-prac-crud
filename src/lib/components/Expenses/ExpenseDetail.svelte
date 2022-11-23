@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import {blur, scale, fade, fly, slide} from "svelte/transition";
     /// props
     export let id;
     export let name = "";
@@ -11,11 +12,9 @@
     const toggleAmount = () => {
         displayAmount = !displayAmount;
     };
-
     const dispatchDelete = (e) => {
         dispatch("onDelete", { id });
     };
-
     const dispatchEdit = (e) => {
         dispatch("onEdit", { id });
     };
@@ -30,7 +29,11 @@
             </button>
         </h2>
         {#if displayAmount}
-            <h4>amount: ${amount}</h4>
+        <!-- <h4 transition:blur>amount: ${amount}</h4> -->
+            <!-- <h4 transition:scale>amount: ${amount}</h4> -->
+            <!-- <h4 transition:slide>amount: ${amount}</h4> -->
+            <!-- <h4 transition:fade>amount: ${amount}</h4> -->
+            <h4 transition:fly={{x: 300, y: 0, duration: 500, delay: 150}}>amount: ${amount}</h4>
         {/if}
     </div>
     <div class="expense-buttons">
