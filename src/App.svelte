@@ -1,4 +1,6 @@
 <script lang="js">
+    import Github from "./lib/components/github/github.svelte";
+    import Await from "./lib/components/github/Await.svelte";
     import { onMount, afterUpdate } from "svelte";
     //// components
     import Navbar from "./lib/components/Navbar.svelte";
@@ -99,7 +101,9 @@
 
 <Navbar {displayForm}/>
 <main class="content">
-    {#if isShown}
+    <!-- <Github /> -->
+    <Await />
+    <!-- {#if isShown}
         <Modal>
             <ExpenseForm
                 {hideForm}
@@ -122,5 +126,5 @@
         type="button"
         class="btn btn-primary btn-block"
         on:click={clearExpenses}>Clear Expenses</button
-    >
+    > -->
 </main>

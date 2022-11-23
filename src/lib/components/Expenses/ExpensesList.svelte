@@ -1,8 +1,7 @@
 <script>
     import App from "../../../App.svelte";
     import { fly } from "svelte/transition";
-    import { flip } from "svelte/types/runtime/animate";
-    import "./types/runtime/animate";
+    import { flip } from "svelte/animate";
     import SectionTitle from "../Title.svelte";
     import ExpenseDetail from "./ExpenseDetail.svelte";
 
